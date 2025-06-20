@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api")
 class TestController(private val calculatorService: CalculatorService) {
-//test
+
     @PostMapping("/testadd")
     fun testAdd(@RequestBody request: AddRequest): AddResponse {
         val result = calculatorService.add(request.a, request.b)
         return AddResponse(result = result)
     }
-
+//test
     @GetMapping("/testadd")
     fun testAddGet(@RequestParam a: Int, @RequestParam b: Int): AddResponse {
         val result = calculatorService.add(a, b)
