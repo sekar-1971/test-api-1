@@ -49,5 +49,4 @@ jobs:
               repo: context.repo.repo,
               body: `
 
-🔍 **Next step: Please perform a manual code review before merging.**  
-🧑‍💻 PR by: @${pr.user.login}`;
+
