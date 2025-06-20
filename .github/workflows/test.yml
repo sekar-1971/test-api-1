@@ -48,7 +48,6 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: `
-✅ **Kotlin unit tests have successfully run.**  
+
 🔍 **Next step: Please perform a manual code review before merging.**  
-🧑‍💻 PR by: @${pr.user.login}`
-            });
+🧑‍💻 PR by: @${pr.user.login}`;
