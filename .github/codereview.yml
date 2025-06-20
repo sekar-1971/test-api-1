@@ -1,4 +1,4 @@
-name: Kotlin PR - Unit Test
+name: Kotlin PR - Unit Test & Manual Review
 
 on:
   pull_request:
@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  
+
   manual_review_notice:
     name: Manual Code Review Notification
     runs-on: ubuntu-latest
@@ -23,4 +23,5 @@ jobs:
               issue_number: pr.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `✅ **Kotlin unit tests have successfully run.**  **Next step: Please perform a manual code review before merging.** 🧑‍💻 PR by: @${pr.user.login}`});
+              body: `✅ **Kotlin unit tests have successfully run.**  🔍 **Next step: Please perform a manual code review before merging.**  🧑‍💻 PR by: @${pr.user.login}`
+            });
