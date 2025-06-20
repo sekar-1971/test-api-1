@@ -1,0 +1,26 @@
+name: Kotlin PR - Unit Test
+
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    branches:
+      - main
+
+jobs:
+  
+  manual_review_notice:
+    name: Manual Code Review Notification
+    runs-on: ubuntu-latest
+    needs: kotlin_unit_tests
+    steps:
+      - name: Post PR Comment for Manual Review
+        uses: actions/github-script@v7
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const pr = context.payload.pull_request;
+            await github.rest.issues.createComment({
+              issue_number: pr.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: `✅ **Kotlin unit tests have successfully run.**  **Next step: Please perform a manual code review before merging.** 🧑‍💻 PR by: @${pr.user.login}`});
