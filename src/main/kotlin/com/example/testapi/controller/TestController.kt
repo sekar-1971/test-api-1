@@ -14,7 +14,7 @@ class TestController(private val calculatorService: CalculatorService) {
         val result = calculatorService.add(request.a, request.b)
         return AddResponse(result = result)
     }
-//test1
+//test
     @GetMapping("/testadd")
     fun testAddGet(@RequestParam a: Int, @RequestParam b: Int): AddResponse {
         val result = calculatorService.add(a, b)
