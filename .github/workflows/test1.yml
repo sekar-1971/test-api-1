@@ -22,7 +22,7 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           tag_prefix: ''
-          tag_template: 'yyyy.WW.E.i'
+          tag_template: 'yyyy.mm.dd.i'
 
       - name: Create and push tag
         run: |
