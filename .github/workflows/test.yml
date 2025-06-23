@@ -1,4 +1,4 @@
-name: Kotlin CodeQL + Manual Review Reminder
+name: Kotlin CodeQL + Tests + Manual Review
 
 on:
   push:
@@ -13,6 +13,7 @@ permissions:
   security-events: write
 
 jobs:
+  # 1️⃣ CodeQL analysis (manual build)
   codeql_analysis:
     name: CodeQL Analysis (Java + Kotlin)
     runs-on: ubuntu-latest
@@ -22,27 +23,50 @@ jobs:
         language: ['java-kotlin']
         build-mode: ['manual']
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
-          build-mode: ${{ matrix.build-mode }}
+          build-mode: ${{ matrix['build-mode'] }}
           queries: security-extended
           dependency-caching: true
 
-      - name: Build Kotlin/Java project
+      - name: Build project
         run: |
+          chmod +x ./gradlew
           ./gradlew clean assemble
-          
-      - name: Analyze with CodeQL
+
+      - name: Run CodeQL analysis
         uses: github/codeql-action/analyze@v3
 
-  manual_review_notice:
-    name: Manual Review Notification
+  # 2️⃣ Run tests when CodeQL passed
+  run_tests:
+    name: Run Kotlin/Java Tests
     needs: codeql_analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 11
+
+      - name: Grant Gradle wrapper exec permission
+        run: chmod +x ./gradlew
+
+      - name: Run unit tests
+        run: ./gradlew test
+
+  # 3️⃣ Manual review reminder only on PRs, after tests succeed
+  manual_review_notice:
+    name: Manual Code Review Notification
+    needs: run_tests
     if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
     steps:
@@ -56,5 +80,10 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.number,
-              body: `🔍 **Manual Code Review Required**\n\nA pull request by @${pr.user.login} was updated—CodeQL has completed. Please review code, inspect the results, and approve before merging.`
+              body: [
+                '🔍 **Manual Code Review Required**',
+                '',
+                `@${pr.user.login} your changes have passed CodeQL and all tests.`,
+                'Please review the code, inspect any findings, and approve or request changes before merging.'
+              ].join('\n')
             });
