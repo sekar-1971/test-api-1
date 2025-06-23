@@ -1,52 +1,89 @@
-name: Kotlin PR - Unit Test & Manual Review
+name: Kotlin CodeQL + Tests + Manual Review
 
 on:
+  push:
+    branches: [ main ]
   pull_request:
-    types: [opened, synchronize, reopened]
-    branches:
-      - main
+    types: [opened, reopened, synchronize]
+    branches: [ main ]
+
+permissions:
+  actions: read
+  contents: read
+  security-events: write
 
 jobs:
-  kotlin_unit_tests:
-    name: Run Kotlin Unit Tests
+  # 1️⃣ CodeQL analysis (manual build)
+  codeql_analysis:
+    name: CodeQL Analysis (Java + Kotlin)
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        language: ['java-kotlin']
+        build-mode: ['manual']
     steps:
-      - name: Checkout Code
+      - name: Checkout repository
         uses: actions/checkout@v3
 
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - name: Initialize CodeQL
+        uses: github/codeql-action/init@v3
         with:
-          distribution: 'temurin'
-          java-version: '21'
+          languages: ${{ matrix.language }}
+          build-mode: ${{ matrix['build-mode'] }}
+          queries: security-extended
+          dependency-caching: true
 
-      - name: Grant Execute Permission to Gradle
+      - name: Build project
+        run: |
+          chmod +x ./gradlew
+          ./gradlew clean assemble
+
+      - name: Run CodeQL analysis
+        uses: github/codeql-action/analyze@v3
+
+  # 2️⃣ Run tests when CodeQL passed
+  run_tests:
+    name: Run Kotlin/Java Tests
+    needs: codeql_analysis
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
+      - name: Grant Gradle wrapper exec permission
         run: chmod +x ./gradlew
 
-      - name: Run Unit Tests
+      - name: Run unit tests
         run: ./gradlew test
 
-      - name: Upload Test Results
-        uses: actions/upload-artifact@v3
-        with:
-          name: test-results
-          path: build/test-results/test/
-
+  # 3️⃣ Manual review reminder only on PRs, after tests succeed
   manual_review_notice:
     name: Manual Code Review Notification
+    needs: run_tests
+    if: github.event_name == 'pull_request'
     runs-on: ubuntu-latest
-    needs: kotlin_unit_tests
     steps:
-      - name: Post PR Comment for Manual Review
+      - name: Post PR comment for manual review
         uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const pr = context.payload.pull_request;
             await github.rest.issues.createComment({
-              issue_number: pr.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: `
-
-
+              issue_number: pr.number,
+              body: [
+                '🔍 **Manual Code Review Required**',
+                '',
+                `@${pr.user.login} your changes have passed CodeQL and all tests.`,
+                'Please review the code, inspect any findings, and approve or request changes before merging.'
+              ].join('\n')
+            });
