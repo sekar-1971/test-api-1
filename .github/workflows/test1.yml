@@ -8,8 +8,8 @@ permissions:
   contents: write
 
 env:
-  AWS_REGION: ${{ env.AWS_REGION }}
-  ECR_REPOSITORY: ${{ env.ECR_REPOSITORY }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
 
 jobs:
   tag_and_push_ecr:
