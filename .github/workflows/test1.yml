@@ -8,7 +8,7 @@ permissions:
   contents: write
 
 env:
-  AWS_REGION: ${{ vars.AWS_REGION }}
+  AWS_REGION: ${{ secrets.AWS_REGION }}
   ECR_REPOSITORY: aws-ecr-test
 
 jobs:
