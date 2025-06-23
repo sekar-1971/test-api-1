@@ -1,9 +1,11 @@
-name: Kotlin CodeQL + Manual Review Reminder
-
 on:
+  push:
+    branches: [ main ]
   pull_request:
     types: [opened, reopened, synchronize]
     branches: [ main ]
+  schedule:
+    - cron: '0 2 * * 0'  # optional weekly scan
 
 permissions:
   actions: read
@@ -17,25 +19,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ['java-kotlin']
-        build-mode: ['autobuild']
+        language: [ 'java-kotlin' ]
+        build-mode: [ 'autobuild' ]
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v3
-
+      - uses: actions/checkout@v3
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: ${{ matrix.language }}
           build-mode: ${{ matrix.build-mode }}
-          # Use 'queries' to specify built‑in suite
           queries: security-extended
-          # Optionally add packs if needed
-          # packs: scope/pack1,scope/pack2@version
-
+          dependency-caching: true
       - name: Build with Gradle
-        run: ./gradlew build
-
+        run: ./gradlew clean build
       - name: Analyze with CodeQL
         uses: github/codeql-action/analyze@v3
 
@@ -43,9 +39,9 @@ jobs:
     name: Manual Review Notification
     runs-on: ubuntu-latest
     needs: codeql_analysis
+    if: github.event_name == 'pull_request'
     steps:
-      - name: Post PR comment for manual review
-        uses: actions/github-script@v7
+      - uses: actions/github-script@v7
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
@@ -54,5 +50,5 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               issue_number: pr.number,
-              body: `🔍 **Manual Code Review Required**\n\nA pull request by @${pr.user.login} was just updated. Please review the Kotlin/Java code, check the CodeQL results, and leave feedback or approve before merging.`
-            });
+              body: `🔍 **Manual Code Review Required**\n\n@${pr.user.login} opened or updated this PR. ✅ CodeQL results are in — please review code & security alerts before merging.`
+            })
