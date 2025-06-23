@@ -37,5 +37,5 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
     }
 } 
 kotlin {
-    jvmToolchain(21)
+    jvmToolchain(17)
 }
