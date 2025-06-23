@@ -9,7 +9,7 @@ permissions:
 
 env:
   AWS_REGION: ${{ vars.AWS_REGION }}
-  ECR_REPOSITORY: ${{ vars.ECR_REPOSITORY }}
+  ECR_REPOSITORY: 387529818462.dkr.ecr.us-east-1.amazonaws.com/aws-ecr-test
 
 jobs:
   tag_and_push_ecr:
