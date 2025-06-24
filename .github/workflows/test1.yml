@@ -75,6 +75,9 @@ jobs:
           repository: sekar-1971/test-api
           path: terraform-repo
           token: ${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 1
+          sparse-checkout: |
+            terraform/
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
