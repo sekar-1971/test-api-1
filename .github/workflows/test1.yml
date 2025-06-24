@@ -2,7 +2,7 @@ name: Tag, Build Docker & Push to ECR
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 permissions:
   contents: write

@@ -2,10 +2,10 @@ name: Kotlin CodeQL + Tests + Manual Review
 
 on:
   push:
-    branches: [ main ]
+    branches: [ master ]
   pull_request:
     types: [opened, reopened, synchronize]
-    branches: [ main ]
+    branches: [ master ]
 
 permissions:
   actions: read
