@@ -1,7 +1,7 @@
 # Multi-stage build for Kotlin Spring Boot application
 
 # Stage 1: Build the application
-FROM gradle:8.5-jdk17 AS build
+FROM gradle:8.5-jdk21 AS build
 
 # Set working directory
 WORKDIR /app
@@ -20,7 +20,7 @@ COPY src/ src/
 RUN gradle build --no-daemon
 
 # Stage 2: Runtime image
-FROM eclipse-temurin:17-jre
+FROM eclipse-temurin:21-jre
 
 # Create app user for security
 RUN groupadd -g 1001 appgroup && \
@@ -33,7 +33,7 @@ WORKDIR /app
 COPY --from=build /app/build/libs/*.jar app.jar
 
 # Install necessary packages (as root)
-RUN apt-get update && apt-get install -y tzdata && rm -rf /var/lib/apt/lists/*
+RUN apt-get update && apt-get install -y tzdata wget && rm -rf /var/lib/apt/lists/*
 
 # Change ownership to app user
 RUN chown -R appuser:appgroup /app
@@ -49,7 +49,7 @@ ENV JAVA_OPTS="-Xmx512m -Xms256m -XX:+UseG1GC -XX:+UseContainerSupport"
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=3s --start-period=60s --retries=3 \
-  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/actuator/health || exit 1
+  CMD wget --no-verbose --tries=1 --spider http://localhost:8080/api/health/lb || exit 1
 
 # Run the application
 ENTRYPOINT ["sh", "-c", "java $JAVA_OPTS -jar app.jar"] 
