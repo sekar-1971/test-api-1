@@ -20,4 +20,18 @@ class TestController(private val calculatorService: CalculatorService) {
         val result = calculatorService.add(a, b)
         return AddResponse(result = result)
     }
+
+    @GetMapping("/health")
+    fun healthCheck(): Map<String, Any> {
+        return mapOf(
+            "status" to "UP",
+            "service" to "test-api",
+            "timestamp" to System.currentTimeMillis()
+        )
+    }
+
+    @GetMapping("/health/lb")
+    fun loadBalancerHealthCheck(): Map<String, String> {
+        return mapOf("status" to "healthy")
+    }
 } 

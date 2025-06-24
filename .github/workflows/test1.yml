@@ -17,6 +17,8 @@ jobs:
   tag_and_push_ecr:
     runs-on: ubuntu-latest
     environment: test
+    outputs:
+      tag: ${{ steps.tag.outputs.next_release_tag }}
     steps:
       - name: Checkout repository with history
         uses: actions/checkout@v4
@@ -61,3 +63,64 @@ jobs:
         run: |
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+
+  deploy_with_terraform:
+    needs: tag_and_push_ecr
+    runs-on: ubuntu-latest
+    environment: test
+    steps:
+      - name: Checkout terraform repository
+        uses: actions/checkout@v4
+        with:
+          repository: sekar-1971/test-api
+          path: terraform-repo
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ env.AWS_REGION }}
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: "1.5.0"
+
+      - name: Terraform Init
+        working-directory: terraform-repo/terraform
+        run: terraform init
+        continue-on-error: false
+
+      - name: Terraform Format Check
+        working-directory: terraform-repo/terraform
+        run: terraform fmt -check
+        continue-on-error: false
+
+      - name: Terraform Validate
+        working-directory: terraform-repo/terraform
+        run: terraform validate
+        continue-on-error: false
+
+      - name: Terraform Plan
+        working-directory: terraform-repo/terraform
+        run: |
+          terraform plan \
+            -var="image_tag=${{ needs.tag_and_push_ecr.outputs.tag }}" \
+            -var="ecr_repository=${{ env.ECR_REPOSITORY }}" \
+            -var="aws_region=${{ env.AWS_REGION }}" \
+            -out=tfplan
+        continue-on-error: false
+
+      - name: Terraform Apply
+        working-directory: terraform-repo/terraform
+        run: terraform apply -auto-approve tfplan
+        continue-on-error: false
+
+      - name: Get Terraform Outputs
+        working-directory: terraform-repo/terraform
+        run: |
+          echo "Application URL: $(terraform output -raw application_url 2>/dev/null || echo 'Not available')"
+          echo "Load Balancer DNS: $(terraform output -raw load_balancer_dns 2>/dev/null || echo 'Not available')"
+        continue-on-error: true

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.testapi.controller.TestControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-06-20T10:20:49" hostname="Krishavs-MacBook-Air.local" time="0.123">
+<testsuite name="com.example.testapi.controller.TestControllerTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-06-24T10:52:07" hostname="Krishavs-MacBook-Air.local" time="0.104">
   <properties/>
-  <testcase name="testGetTestaddWithLargeNumbers()" classname="com.example.testapi.controller.TestControllerTest" time="0.091"/>
-  <testcase name="testGetTestaddWithQueryParameters()" classname="com.example.testapi.controller.TestControllerTest" time="0.003"/>
-  <testcase name="testPostTestaddWithValidRequest()" classname="com.example.testapi.controller.TestControllerTest" time="0.023"/>
-  <testcase name="testGetTestaddWithZeroValues()" classname="com.example.testapi.controller.TestControllerTest" time="0.001"/>
+  <testcase name="testGetTestaddWithLargeNumbers()" classname="com.example.testapi.controller.TestControllerTest" time="0.078"/>
+  <testcase name="testGetTestaddWithQueryParameters()" classname="com.example.testapi.controller.TestControllerTest" time="0.002"/>
+  <testcase name="testPostTestaddWithValidRequest()" classname="com.example.testapi.controller.TestControllerTest" time="0.019"/>
+  <testcase name="testGetTestaddWithZeroValues()" classname="com.example.testapi.controller.TestControllerTest" time="0.002"/>
   <testcase name="testPostTestaddWithNegativeNumbers()" classname="com.example.testapi.controller.TestControllerTest" time="0.001"/>
-  <system-out><![CDATA[2025-06-20T15:50:49.048+05:30  INFO 46395 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.testapi.controller.TestControllerTest]: TestControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-06-20T15:50:49.055+05:30  INFO 46395 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.testapi.TestApiApplication for test class com.example.testapi.controller.TestControllerTest
+  <system-out><![CDATA[2025-06-24T16:22:06.981+05:30  INFO 3352 --- [test-api] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.testapi.controller.TestControllerTest]: TestControllerTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-24T16:22:06.986+05:30  INFO 3352 --- [test-api] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.testapi.TestApiApplication for test class com.example.testapi.controller.TestControllerTest
 
   .   ____          _            __ _ _
  /\\ / ___'_ __ _ _(_)_ __  __ _ \ \ \ \
@@ -17,12 +17,13 @@
  =========|_|==============|___/=/_/_/_/
  :: Spring Boot ::                (v3.2.0)
 
-2025-06-20T15:50:49.066+05:30  INFO 46395 --- [    Test worker] c.e.t.controller.TestControllerTest      : Starting TestControllerTest using Java 21.0.7 with PID 46395 (started by krishavadithya in /Users/krishavadithya/Documents/GitHub/test-api-1)
-2025-06-20T15:50:49.066+05:30  INFO 46395 --- [    Test worker] c.e.t.controller.TestControllerTest      : No active profile set, falling back to 1 default profile: "default"
-2025-06-20T15:50:49.176+05:30  INFO 46395 --- [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
-2025-06-20T15:50:49.177+05:30  INFO 46395 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
-2025-06-20T15:50:49.178+05:30  INFO 46395 --- [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 0 ms
-2025-06-20T15:50:49.182+05:30  INFO 46395 --- [    Test worker] c.e.t.controller.TestControllerTest      : Started TestControllerTest in 0.125 seconds (process running for 1.446)
+2025-06-24T16:22:06.997+05:30  INFO 3352 --- [test-api] [    Test worker] c.e.t.controller.TestControllerTest      : Starting TestControllerTest using Java 21.0.7 with PID 3352 (started by krishavadithya in /Users/krishavadithya/Documents/GitHub/test-api-1)
+2025-06-24T16:22:06.997+05:30  INFO 3352 --- [test-api] [    Test worker] c.e.t.controller.TestControllerTest      : No active profile set, falling back to 1 default profile: "default"
+2025-06-24T16:22:07.128+05:30  INFO 3352 --- [test-api] [    Test worker] o.s.b.t.m.w.SpringBootMockServletContext : Initializing Spring TestDispatcherServlet ''
+2025-06-24T16:22:07.131+05:30  INFO 3352 --- [test-api] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Initializing Servlet ''
+2025-06-24T16:22:07.132+05:30  INFO 3352 --- [test-api] [    Test worker] o.s.b.a.e.web.EndpointLinksResolver      : Exposing 3 endpoint(s) beneath base path '/actuator'
+2025-06-24T16:22:07.135+05:30  INFO 3352 --- [test-api] [    Test worker] o.s.t.web.servlet.TestDispatcherServlet  : Completed initialization in 3 ms
+2025-06-24T16:22:07.141+05:30  INFO 3352 --- [test-api] [    Test worker] c.e.t.controller.TestControllerTest      : Started TestControllerTest in 0.154 seconds (process running for 1.692)
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

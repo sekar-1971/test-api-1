@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.example.testapi.service.CalculatorServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-06-20T10:20:49" hostname="Krishavs-MacBook-Air.local" time="0.007">
+<testsuite name="com.example.testapi.service.CalculatorServiceTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-06-24T10:52:07" hostname="Krishavs-MacBook-Air.local" time="0.013">
   <properties/>
   <testcase name="test add with mixed positive and negative()" classname="com.example.testapi.service.CalculatorServiceTest" time="0.003"/>
   <testcase name="test add with negative numbers()" classname="com.example.testapi.service.CalculatorServiceTest" time="0.001"/>
   <testcase name="test add with large numbers()" classname="com.example.testapi.service.CalculatorServiceTest" time="0.001"/>
-  <testcase name="test add with positive numbers()" classname="com.example.testapi.service.CalculatorServiceTest" time="0.001"/>
+  <testcase name="test add with positive numbers()" classname="com.example.testapi.service.CalculatorServiceTest" time="0.0"/>
   <testcase name="test add with zero()" classname="com.example.testapi.service.CalculatorServiceTest" time="0.001"/>
-  <system-out><![CDATA[2025-06-20T15:50:49.310+05:30  INFO 46395 --- [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.testapi.service.CalculatorServiceTest]: CalculatorServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
-2025-06-20T15:50:49.313+05:30  INFO 46395 --- [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.testapi.TestApiApplication for test class com.example.testapi.service.CalculatorServiceTest
+  <system-out><![CDATA[2025-06-24T16:22:07.249+05:30  INFO 3352 --- [test-api] [    Test worker] t.c.s.AnnotationConfigContextLoaderUtils : Could not detect default configuration classes for test class [com.example.testapi.service.CalculatorServiceTest]: CalculatorServiceTest does not declare any static, non-private, non-final, nested classes annotated with @Configuration.
+2025-06-24T16:22:07.255+05:30  INFO 3352 --- [test-api] [    Test worker] .b.t.c.SpringBootTestContextBootstrapper : Found @SpringBootConfiguration com.example.testapi.TestApiApplication for test class com.example.testapi.service.CalculatorServiceTest
 ]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>
