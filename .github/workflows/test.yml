@@ -1,4 +1,4 @@
-name: Kotlin CodeQL + Tests + Manual Review
+name: Dev-Test
 
 on:
   push:
