@@ -1,8 +1,13 @@
-name: Tag, Build Docker & Push to ECR
+name: AWS-Service
 
 on:
   push:
     branches: [ master ]
+  workflow_run:
+    workflows: ["Dev-Test"]
+    types:
+      - completed
+    branches: [master]
 
 permissions:
   contents: write
@@ -19,6 +24,7 @@ jobs:
     environment: test
     outputs:
       tag: ${{ steps.tag.outputs.next_release_tag }}
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}  
     steps:
       - name: Checkout repository with history
         uses: actions/checkout@v4
