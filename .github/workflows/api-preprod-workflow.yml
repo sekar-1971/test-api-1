@@ -75,6 +75,9 @@ jobs:
     runs-on: ubuntu-latest
     environment: test
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Checkout terraform repository
         uses: actions/checkout@v4
         with:
